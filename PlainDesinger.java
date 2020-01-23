@@ -14,9 +14,10 @@ public class PlainDesinger {
 	private JButton btnNewButtonLeft;
 	private JButton btnNewButtonUp;
 	private JButton btnCreate;
-	private JPanel panelMain;
-	private Bomber bomber = new Bomber(false, 250, 250, 2, Color.BLACK, Color.RED, true, true, true, 1500);
-	private Wheel wheel = new Wheel(Color.BLUE, false, Wenum.wheel4);
+	private PanelPlain panelMain;
+	private ITransport plain;
+	private IWheel wheel;
+	private JButton btnCreateFull;
  	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -38,17 +39,16 @@ public class PlainDesinger {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
-		panelMain = new PanelPlain(bomber, wheel);
+		panelMain = new PanelPlain(plain, wheel);
 		panelMain.setBounds(0, 0, 882, 603);
 		frame.getContentPane().add(panelMain);
 		panelMain.setLayout(null);
 		btnCreate = new JButton("Cоздать");
 		btnCreate.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Bomber.Life = true;
-				Wheel.WLife = true;
-				bomber.SetPosition(100, 100, frame.getWidth(), frame.getHeight());
-				wheel.SetPosition(100, 100, frame.getWidth(), frame.getHeight());
+				plain = new Plain(10, 1, Color.blue, 20, wheel = new SecondKindWheel(Color.BLACK));
+				panelMain.setPlain(plain);
+				plain.SetPosition(100, 100, frame.getWidth(), frame.getHeight());
 				panelMain.repaint();
 		}
 			}
@@ -58,10 +58,11 @@ public class PlainDesinger {
 		btnNewButtonRight = new JButton(">");
 		btnNewButtonRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				bomber.MoveTransport(Penum.Right);
-				wheel.SetPosition(bomber._startPosX, bomber._startPosY, frame.getWidth(), frame.getHeight());
-				
-				panelMain.repaint();
+				if (plain != null && wheel != plain) {
+					plain.MoveTransport(Penum.Right);
+					wheel.SetPosition(plain.getPosX(), plain.getPosY());
+					panelMain.repaint();
+				}
 			}
 		});
 		btnNewButtonRight.setFont(new Font("Tahoma", Font.PLAIN, 7));
@@ -70,9 +71,11 @@ public class PlainDesinger {
 		btnNewButtonDown = new JButton("v");
 		btnNewButtonDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				bomber.MoveTransport(Penum.Down);
-				wheel.SetPosition(bomber._startPosX, bomber._startPosY, frame.getWidth(), frame.getHeight());
-				panelMain.repaint();
+				if (plain != null && wheel != plain) {
+					plain.MoveTransport(Penum.Down);
+					wheel.SetPosition(plain.getPosX(), plain.getPosY());
+					panelMain.repaint();
+				}
 			}
 		});
 		btnNewButtonDown.setFont(new Font("Tahoma", Font.PLAIN, 7));
@@ -81,9 +84,11 @@ public class PlainDesinger {
 		btnNewButtonLeft = new JButton("<");
 		btnNewButtonLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				bomber.MoveTransport(Penum.Left);
-				wheel.SetPosition(bomber._startPosX, bomber._startPosY, frame.getWidth(), frame.getHeight());
-				panelMain.repaint();
+				if (plain != null && wheel != plain) {
+					plain.MoveTransport(Penum.Left);
+					wheel.SetPosition(plain.getPosX(), plain.getPosY());
+					panelMain.repaint();
+				}
 			}
 		});
 		btnNewButtonLeft.setFont(new Font("Tahoma", Font.PLAIN, 7));
@@ -92,14 +97,27 @@ public class PlainDesinger {
 		btnNewButtonUp = new JButton("^");
 		btnNewButtonUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				bomber.MoveTransport(Penum.Up);
-				wheel.SetPosition(bomber._startPosX, bomber._startPosY, frame.getWidth(), frame.getHeight());
-				panelMain.repaint();
+				if (plain != null && wheel != plain) {
+					plain.MoveTransport(Penum.Up);
+					wheel.SetPosition(plain.getPosX(), plain.getPosY());
+					panelMain.repaint();
+				}
 			}
 		});
 		btnNewButtonUp.setFont(new Font("Tahoma", Font.PLAIN, 7));
 		btnNewButtonUp.setBounds(780, 499, 39, 39);
 		panelMain.add(btnNewButtonUp);
+		btnCreateFull = new JButton("Создать Full");
+		btnCreateFull.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				plain = new ArmyPlain(1, 100, 1, Color.orange, Color.blue, true, true, true, 100, wheel = new FirstKindWheel(Color.BLACK));
+				panelMain.setPlain(plain);
+				plain.SetPosition(100, 100, frame.getWidth(), frame.getHeight());
+				panelMain.repaint();
+			}
+		});
+		btnCreateFull.setBounds(125, 13, 147, 33);
+		panelMain.add(btnCreateFull);
 	}
 }
 
